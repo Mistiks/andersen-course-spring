@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,12 +16,18 @@ public class WorkSpaceRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
+    @Transactional
     public int addNewWorkspace(WorkSpace space) {
         EntityTransaction transaction = entityManager.getTransaction();
 
-        transaction.begin();
-        entityManager.persist(space);
-        transaction.commit();
+        try {
+            transaction.begin();
+            entityManager.persist(space);
+            transaction.commit();
+        } catch (RuntimeException exception) {
+            System.err.println(exception.getMessage());
+            transaction.rollback();
+        }
 
         return 1;
     }
