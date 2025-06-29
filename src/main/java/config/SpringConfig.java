@@ -9,6 +9,7 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
 import javax.sql.DataSource;
 import java.util.Properties;
+import java.util.Scanner;
 
 @Configuration
 @ComponentScan(basePackages = {"controller", "entity", "repository", "service"})
@@ -39,5 +40,10 @@ public class SpringConfig {
 
         factoryBean.setJpaProperties(jpaProperties);
         return factoryBean;
+    }
+
+    @Bean
+    public Scanner scanner() {
+        return new Scanner(System.in);
     }
 }

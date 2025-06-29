@@ -27,6 +27,12 @@ public class DataReader {
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
+    @Autowired
+    public DataReader(Scanner scanner) {
+        this.scanner = scanner;
+    }
+
+
     public WorkSpace getNewSpace() {
         int id = getInt(spaceId, scanner);
         String type = getString(spaceType, scanner);

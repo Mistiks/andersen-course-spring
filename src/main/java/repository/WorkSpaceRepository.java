@@ -15,7 +15,6 @@ public class WorkSpaceRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
-
     public int addNewWorkspace(WorkSpace space) {
         EntityTransaction transaction = entityManager.getTransaction();
 
