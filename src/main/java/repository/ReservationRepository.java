@@ -3,10 +3,10 @@ package repository;
 import entity.Reservation;
 import entity.WorkSpace;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,9 +24,9 @@ public class ReservationRepository {
         this.workSpaceRepository = workSpaceRepository;
     }
 
+    @Transactional
     public int addNewReservation(Reservation reservation) {
         Optional<WorkSpace> workSpace = workSpaceRepository.getWorkSpaceById(reservation.getSpaceId());
-        EntityTransaction transaction;
 
         if (workSpace.isEmpty()) {
             return 0;
@@ -35,10 +35,7 @@ public class ReservationRepository {
         reservation = new Reservation(reservation.getId(), workSpace.get(), reservation.getClientName(),
                 reservation.getDate(), reservation.getTimeStart(), reservation.getTimeEnd());
 
-        transaction = entityManager.getTransaction();
-        transaction.begin();
         entityManager.persist(reservation);
-        transaction.commit();
 
         return 1;
     }
@@ -57,50 +54,43 @@ public class ReservationRepository {
         return entityManager.createQuery("SELECT e FROM Reservation e", Reservation.class).getResultList();
     }
 
+    @Transactional
     public int deleteReservation(int id) {
         Optional<Reservation> reservation = getReservationById(id);
 
         if (reservation.isPresent()) {
-            EntityTransaction transaction = entityManager.getTransaction();
-            transaction.begin();
-
             entityManager.remove(reservation.get());
-
             entityManager.flush();
-            transaction.commit();
+
             return 1;
         }
 
         return 0;
     }
 
+    @Transactional
     public int deleteReservationByWorkSpaceId(int spaceId) {
         Optional<WorkSpace> workSpace = workSpaceRepository.getWorkSpaceById(spaceId);
         List<Reservation> reservationList;
-        EntityTransaction transaction;
 
         if (workSpace.isEmpty()) {
             return 0;
         }
 
-        reservationList = getAllReservationsByWorkSpaceId(spaceId);
-
-        transaction = entityManager.getTransaction();
-        transaction.begin();
+        reservationList = getAllReservationsByWorkSpaceId(workSpace.get());
 
         for (Reservation reservation : reservationList) {
             entityManager.remove(reservation);
         }
 
         entityManager.flush();
-        transaction.commit();
 
         return reservationList.size();
     }
 
-    private List<Reservation> getAllReservationsByWorkSpaceId(int spaceId) {
-        return entityManager.createQuery("SELECT e FROM Reservation e WHERE e.space_id = :id", Reservation.class)
-                .setParameter("id", spaceId)
+    private List<Reservation> getAllReservationsByWorkSpaceId(WorkSpace space) {
+        return entityManager.createQuery("SELECT e FROM Reservation e WHERE e.workSpace = :id", Reservation.class)
+                .setParameter("id", space)
                 .getResultList();
     }
 }

@@ -65,7 +65,7 @@ public class Reservation {
     }
 
     public int getSpaceId() {
-        return spaceId;
+        return spaceId != 0 ? spaceId : workSpace.getId();
     }
 
     public void setSpaceId(int spaceId) {

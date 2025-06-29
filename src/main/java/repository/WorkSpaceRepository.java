@@ -2,7 +2,6 @@ package repository;
 
 import entity.WorkSpace;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,17 +17,7 @@ public class WorkSpaceRepository {
 
     @Transactional
     public int addNewWorkspace(WorkSpace space) {
-        EntityTransaction transaction = entityManager.getTransaction();
-
-        try {
-            transaction.begin();
-            entityManager.persist(space);
-            transaction.commit();
-        } catch (RuntimeException exception) {
-            System.err.println(exception.getMessage());
-            transaction.rollback();
-        }
-
+        entityManager.persist(space);
         return 1;
     }
 
@@ -50,35 +39,28 @@ public class WorkSpaceRepository {
         return entityManager.createQuery("SELECT e FROM WorkSpace e WHERE e.availability = true", WorkSpace.class).getResultList();
     }
 
+    @Transactional
     public int updateWorkSpace(WorkSpace space) {
         Optional<WorkSpace> workSpace = getWorkSpaceById(space.getId());
-        EntityTransaction transaction;
 
         if (workSpace.isEmpty()) {
             return 0;
         }
 
-        transaction = entityManager.getTransaction();
-        transaction.begin();
-
         entityManager.merge(space);
-
-        transaction.commit();
+        entityManager.flush();
 
         return 1;
     }
 
+    @Transactional
     public int deleteWorkspace(int id) {
         Optional<WorkSpace> workSpace = getWorkSpaceById(id);
 
         if (workSpace.isPresent()) {
-            EntityTransaction transaction = entityManager.getTransaction();
-            transaction.begin();
-
             entityManager.remove(workSpace.get());
-
             entityManager.flush();
-            transaction.commit();
+
             return 1;
         }
 
