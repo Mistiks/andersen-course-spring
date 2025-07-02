@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>All spaces</title>
+</head>
+
+<body>
+<h2>List of all spaces</h2>
+<br>
+
+<ul>
+    <li th:each="workspace : ${workspaceList}" th:text="${workspace}"></li>
+</ul>
+
+<tr th:each="workspace : ${workspaceList}">
+    <br> <td th:text="${workspace}"></td> <br>
+</tr>
+
+<br>
+<a th:href="@{/adminMenu}">Resume</a>
+</body>
+
+</html>

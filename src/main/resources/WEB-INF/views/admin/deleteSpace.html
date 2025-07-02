@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Delete workspace</title>
+</head>
+
+<body>
+<h2>Workspace deletion</h2>
+<br>
+<form action="#" th:action="@{/space/delete}" th:object="${idInput}" method="delete">
+    <div>
+        <label>Enter workspace id: </label>
+        <input type="number" th:field="*{id}" placeholder="Id"/>
+        <p th:if="${#fields.hasErrors('id')}" th:errors="*{id}" style="color: red;"></p>
+
+        <p th:if="${error}" th:text="${error}" style="color: red;"></p>
+    </div>
+    <button type="submit">Delete workspace</button>
+</form>
+<br> <a th:href="@{/adminMenu}">Resume</a>
+</body>
+
+</html>

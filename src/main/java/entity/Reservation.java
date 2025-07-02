@@ -58,6 +58,7 @@ public class Reservation {
         this.timeStart = timeStart;
         this.timeEnd = timeEnd;
         this.workSpace = workSpace;
+        this.spaceId = workSpace.getId();
     }
 
     public int getId() {
@@ -65,7 +66,7 @@ public class Reservation {
     }
 
     public int getSpaceId() {
-        return spaceId != 0 ? spaceId : workSpace.getId();
+        return spaceId;
     }
 
     public void setSpaceId(int spaceId) {
@@ -115,7 +116,7 @@ public class Reservation {
     @Override
     public String toString() {
         return String.format("Reservation №%d of workspace with id %d by %s on %s. Start: %s. End: %s",
-                id, spaceId != 0 ? spaceId : workSpace.getId(), clientName,
+                id, spaceId, clientName,
                 dateFormatter.format(date), timeFormatter.format(timeStart), timeFormatter.format(timeEnd));
     }
 

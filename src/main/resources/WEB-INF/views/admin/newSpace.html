@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>New workspace</title>
+</head>
+
+<body>
+<h2>Workspace creation</h2>
+<br>
+<form action="#" th:action="@{/space/new}" th:object="${spaceInput}" method="post">
+    <div>
+	<label>Enter workspace id: </label>
+        <input type="number" th:field="*{id}" placeholder="Id"/>
+	<p th:if="${#fields.hasErrors('id')}" th:errors="*{id}" style="color: red;"></p>
+
+	<label>Enter workspace type: </label>
+	<input type="text" th:field="*{type}" placeholder="Type"/>
+	<p th:if="${#fields.hasErrors('type')}" th:errors="*{type}" style="color: red;"></p>
+
+	<label>Enter workspace price: </label>
+	<input type="number" th:field="*{price}" placeholder="Price"/>
+	<p th:if="${#fields.hasErrors('price')}" th:errors="*{price}" style="color: red;"></p>
+
+        <p th:if="${error}" th:text="${error}" style="color: red;"></p>
+    </div>
+    <button type="submit">Create new workspace</button>
+</form>
+<br> <a th:href="@{/adminMenu}">Resume</a>
+</body>
+
+</html>

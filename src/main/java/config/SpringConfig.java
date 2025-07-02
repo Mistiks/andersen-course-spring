@@ -13,10 +13,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 import java.util.Properties;
-import java.util.Scanner;
 
 @Configuration
-@ComponentScan(basePackages = {"controller", "entity", "repository", "service"})
+@ComponentScan(basePackages = {"controller", "entity", "repository", "service", "config"})
 @EnableTransactionManagement
 public class SpringConfig {
 
@@ -45,11 +44,6 @@ public class SpringConfig {
 
         factoryBean.setJpaProperties(jpaProperties);
         return factoryBean;
-    }
-
-    @Bean
-    public Scanner scanner() {
-        return new Scanner(System.in);
     }
 
     @Bean
