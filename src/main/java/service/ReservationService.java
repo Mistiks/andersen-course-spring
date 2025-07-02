@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import repository.ReservationRepository;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ReservationService {
@@ -18,23 +18,16 @@ public class ReservationService {
         this.reservationRepository = reservationRepository;
     }
 
-    public int addNewReservation(Reservation reservation) {
-        return reservationRepository.addNewReservation(reservation);
-    }
+    public String getAllReservations() {
+        List<Reservation> reservationList = reservationRepository.getAllReservations();
+        String reservationsData = reservationList.stream()
+                .map(Reservation::toString)
+                .collect(Collectors.joining("\n", "", "\n"));
 
-    public Optional<Reservation> getReservationById(int id) {
-        return reservationRepository.getReservationById(id);
-    }
+        if (reservationsData.isEmpty()) {
+            return "Reservations not found!\n";
+        }
 
-    public List<Reservation> getAllReservations() {
-        return reservationRepository.getAllReservations();
-    }
-
-    public int deleteReservation(int id) {
-        return reservationRepository.deleteReservation(id);
-    }
-
-    public int deleteReservationByWorkSpaceId(int spaceId) {
-        return reservationRepository.deleteReservationByWorkSpaceId(spaceId);
+        return reservationsData;
     }
 }

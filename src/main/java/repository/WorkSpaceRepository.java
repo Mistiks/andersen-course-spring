@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class WorkSpaceRepository {
@@ -21,14 +20,8 @@ public class WorkSpaceRepository {
         return 1;
     }
 
-    public Optional<WorkSpace> getWorkSpaceById(int id) {
-        WorkSpace workSpace = entityManager.find(WorkSpace.class, id);
-
-        if (workSpace != null) {
-            return Optional.of(workSpace);
-        } else {
-            return Optional.empty();
-        }
+    public WorkSpace getWorkSpaceById(int id) {
+        return entityManager.find(WorkSpace.class, id);
     }
 
     public List<WorkSpace> getAllWorkSpaces() {
@@ -41,9 +34,9 @@ public class WorkSpaceRepository {
 
     @Transactional
     public int updateWorkSpace(WorkSpace space) {
-        Optional<WorkSpace> workSpace = getWorkSpaceById(space.getId());
+        WorkSpace workSpace = getWorkSpaceById(space.getId());
 
-        if (workSpace.isEmpty()) {
+        if (workSpace == null) {
             return 0;
         }
 
@@ -55,10 +48,10 @@ public class WorkSpaceRepository {
 
     @Transactional
     public int deleteWorkspace(int id) {
-        Optional<WorkSpace> workSpace = getWorkSpaceById(id);
+        WorkSpace workSpace = getWorkSpaceById(id);
 
-        if (workSpace.isPresent()) {
-            entityManager.remove(workSpace.get());
+        if (workSpace != null) {
+            entityManager.remove(workSpace);
             entityManager.flush();
 
             return 1;

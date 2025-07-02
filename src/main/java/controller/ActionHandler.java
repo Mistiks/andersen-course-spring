@@ -5,23 +5,24 @@ import entity.WorkSpace;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import service.ReservationService;
+import service.WorkSpaceReservationService;
 import service.WorkSpaceService;
-
-import java.util.*;
-import java.util.stream.Collectors;
 
 @Component
 public class ActionHandler {
 
     private final WorkSpaceService workSpaceService;
     private final ReservationService reservationService;
+    private final WorkSpaceReservationService workSpaceReservationService;
     private static final int ADMIN_MENU_OPTION_AMOUNT = 6;
     private static final int CUSTOMER_MENU_OPTION_AMOUNT = 5;
 
     @Autowired
-    public ActionHandler(WorkSpaceService workSpaceService, ReservationService reservationService) {
+    public ActionHandler(WorkSpaceService workSpaceService, ReservationService reservationService,
+                         WorkSpaceReservationService workSpaceReservationService) {
         this.workSpaceService = workSpaceService;
         this.reservationService = reservationService;
+        this.workSpaceReservationService = workSpaceReservationService;
     }
 
     public void processAdminAction(MenuSelector selector, DataReader reader) {
@@ -92,85 +93,27 @@ public class ActionHandler {
     }
 
     private int addReservation(Reservation reservation) {
-        Optional<WorkSpace> workSpace = workSpaceService.getWorkSpaceById(reservation.getSpaceId());
-
-        if (workSpace.isPresent()) {
-            int status = reservationService.addNewReservation(reservation);
-
-            if (status == 1) {
-                workSpace.get().setAvailability(false);
-                workSpaceService.updateWorkSpace(workSpace.get());
-            }
-
-            return status;
-        }
-
-        return 0;
+        return workSpaceReservationService.addReservation(reservation);
     }
 
     private int deleteWorkSpace(int spaceId) {
-        reservationService.deleteReservationByWorkSpaceId(spaceId);
-        return workSpaceService.deleteWorkspace(spaceId);
+        return workSpaceReservationService.deleteWorkSpace(spaceId);
     }
 
     private int deleteReservation(int reservationId) {
-        Optional<Reservation> reservation = reservationService.getReservationById(reservationId);
-
-        if (reservation.isEmpty()) {
-            return 0;
-        }
-
-        Optional<WorkSpace> workSpace = workSpaceService.getWorkSpaceById(reservation.get().getSpaceId());
-
-        if (workSpace.isPresent()) {
-            workSpace.get().setAvailability(true);
-            workSpaceService.updateWorkSpace(workSpace.get());
-        }
-
-        return reservationService.deleteReservation(reservationId);
+        return workSpaceReservationService.deleteReservation(reservationId);
     }
 
     private String getAllWorkSpaces() {
-        List<WorkSpace> workSpaceList = workSpaceService.getAllWorkSpaces();
-        String workspacesData = workSpaceList
-                .stream()
-                .sorted(Comparator.comparing(WorkSpace::getId))
-                .map(WorkSpace::toString)
-                .collect(Collectors.joining("\n", "", "\n"));
-
-        if (workspacesData.isEmpty()) {
-            return "Workspaces not found!\n";
-        }
-
-        return workspacesData;
+        return workSpaceService.getAllWorkSpaces();
     }
 
     private String getAvailableWorkSpaces() {
-        List<WorkSpace> workSpaceList = workSpaceService.getAllAvailableWorkSpaces();
-        String workspacesData = workSpaceList
-                .stream()
-                .sorted(Comparator.comparing(WorkSpace::getId))
-                .map(WorkSpace::toString)
-                .collect(Collectors.joining("\n", "", "\n"));
-
-        if (workspacesData.isEmpty()) {
-            return "Workspaces not found!\n";
-        }
-
-        return workspacesData;
+        return workSpaceService.getAllAvailableWorkSpaces();
     }
 
     private String getAllReservations() {
-        List<Reservation> reservationList = reservationService.getAllReservations();
-        String reservationsData = reservationList.stream()
-                .map(Reservation::toString)
-                .collect(Collectors.joining("\n", "", "\n"));
-
-        if (reservationsData.isEmpty()) {
-            return "Reservations not found!\n";
-        }
-
-        return reservationsData;
+        return reservationService.getAllReservations();
     }
 
     private int updateWorkSpace(WorkSpace updatedSpace) {
