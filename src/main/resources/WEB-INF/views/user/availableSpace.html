@@ -3,11 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>All spaces</title>
+    <title>Available spaces</title>
 </head>
 
 <body>
-<h2>List of all spaces</h2>
+<h2>List of all available spaces</h2>
 <br>
 
 <tr th:each="workspace : ${workspaceList}">
@@ -15,7 +15,7 @@
 </tr>
 
 <br>
-<a th:href="@{/admin}">Resume</a>
+<a th:href="@{/user}">Resume</a>
 </body>
 
 </html>

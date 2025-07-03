@@ -2,21 +2,21 @@ package model;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public class WorkSpaceModel {
 
-    @NotBlank
+    @NotNull
     @Min(1)
     private int id;
 
     @NotBlank
     private String type;
 
-    @NotBlank
+    @NotNull
     @Min(1)
     private int price;
 
-    @NotBlank
     private boolean availability = true;
 
     public WorkSpaceModel() {}

@@ -2,22 +2,28 @@ package model;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public class ReservationModel {
 
-    @NotBlank
+    @NotNull
     @Min(1)
     private int id;
 
-    @NotBlank
+    @NotNull
     @Min(1)
     private int spaceId;
 
     @NotBlank
     private String clientName;
 
+    @NotBlank
     private String date;
+
+    @NotBlank
     private String timeStart;
+
+    @NotBlank
     private String timeEnd;
 
     public ReservationModel() {

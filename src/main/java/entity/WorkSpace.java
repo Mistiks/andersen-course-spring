@@ -29,6 +29,13 @@ public class WorkSpace {
         this.availability = isAvailable;
     }
 
+    public WorkSpace(int id, String type, int price) {
+        this.id = id;
+        this.type = type;
+        this.price = price;
+        this.availability = true;
+    }
+
     public int getId() {
         return id;
     }

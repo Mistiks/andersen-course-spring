@@ -18,23 +18,11 @@ public class ReservationService {
         this.reservationRepository = reservationRepository;
     }
 
-    public int addNewReservation(Reservation reservation) {
-        return reservationRepository.addNewReservation(reservation);
+    public List<String> getAllReservations() {
+        return reservationRepository.getAllReservations().stream().map(Reservation::toString).toList();
     }
 
     public Optional<Reservation> getReservationById(int id) {
-        return reservationRepository.getReservationById(id);
-    }
-
-    public List<Reservation> getAllReservations() {
-        return reservationRepository.getAllReservations();
-    }
-
-    public int deleteReservation(int id) {
-        return reservationRepository.deleteReservation(id);
-    }
-
-    public int deleteReservationByWorkSpaceId(int spaceId) {
-        return reservationRepository.deleteReservationByWorkSpaceId(spaceId);
+        return Optional.ofNullable(reservationRepository.getReservationById(id));
     }
 }
