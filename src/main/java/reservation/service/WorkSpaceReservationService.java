@@ -1,12 +1,12 @@
-package service;
+package reservation.service;
 
-import entity.Reservation;
-import entity.WorkSpace;
+import reservation.entity.Reservation;
+import reservation.entity.WorkSpace;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import repository.ReservationRepository;
-import repository.WorkSpaceRepository;
+import reservation.repository.ReservationRepository;
+import reservation.repository.WorkSpaceRepository;
 
 @Service
 public class WorkSpaceReservationService {

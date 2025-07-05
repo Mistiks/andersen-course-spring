@@ -1,4 +1,4 @@
-package config;
+package reservation.configuration;
 
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.context.annotation.Bean;
@@ -15,7 +15,7 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
-@ComponentScan(basePackages = {"controller", "entity", "repository", "service", "config"})
+@ComponentScan(basePackages = {"reservation"})
 @EnableTransactionManagement
 public class SpringConfig {
 
@@ -33,7 +33,7 @@ public class SpringConfig {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
         LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
         factoryBean.setDataSource(dataSource);
-        factoryBean.setPackagesToScan("entity");
+        factoryBean.setPackagesToScan("reservation.entity");
         factoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 
         Properties jpaProperties = new Properties();

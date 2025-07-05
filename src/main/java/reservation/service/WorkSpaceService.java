@@ -1,14 +1,13 @@
-package service;
+package reservation.service;
 
-import entity.WorkSpace;
+import reservation.entity.WorkSpace;
+import reservation.model.WorkSpaceModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import repository.WorkSpaceRepository;
+import reservation.repository.WorkSpaceRepository;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class WorkSpaceService {
@@ -28,14 +27,18 @@ public class WorkSpaceService {
         return Optional.ofNullable(workSpaceRepository.getWorkSpaceById(spaceId));
     }
 
-    public List<String> getAllWorkSpacesInfo() {
+    public List<WorkSpaceModel> getAllWorkSpacesInfo() {
         List<WorkSpace> workSpaceList = workSpaceRepository.getAllWorkSpaces();
 
-        return workSpaceList.stream().map(WorkSpace::toString).toList();
+        return workSpaceList.stream()
+                .map(i -> new WorkSpaceModel(i.getId(), i.getType(), i.getPrice(), i.getAvailability()))
+                .toList();
     }
 
-    public List<String> getAllAvailableWorkSpaces() {
-        return workSpaceRepository.getAllAvailableWorkSpaces().stream().map(WorkSpace::toString).toList();
+    public List<WorkSpaceModel> getAllAvailableWorkSpaces() {
+        return workSpaceRepository.getAllAvailableWorkSpaces().stream()
+                .map(i -> new WorkSpaceModel(i.getId(), i.getType(), i.getPrice(), i.getAvailability()))
+                .toList();
     }
 
     public int updateWorkSpace(WorkSpace space) {

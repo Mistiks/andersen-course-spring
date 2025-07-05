@@ -1,4 +1,4 @@
-package entity;
+package reservation.entity;
 
 import jakarta.persistence.*;
 import java.util.Objects;

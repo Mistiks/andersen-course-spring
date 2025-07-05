@@ -1,6 +1,6 @@
-package repository;
+package reservation.repository;
 
-import entity.WorkSpace;
+import reservation.entity.WorkSpace;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;

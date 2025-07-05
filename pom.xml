@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.app</groupId>
     <artifactId>workspace-reservation</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
     <properties>
@@ -14,7 +14,6 @@
     </properties>
 
     <dependencies>
-
         <!-- Spring -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -32,85 +31,83 @@
             <version>6.2.5</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>5.13.1</version>
-            <scope>test</scope>
-        </dependency>
 
+        <!-- JUNIT -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.13.1</version>
+            <version>5.10.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>5.10.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.10.0</version>
             <scope>test</scope>
         </dependency>
 
+        <!-- MOCKITO -->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>5.18.0</version>
+            <version>5.3.1</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
-            <version>5.18.0</version>
+            <version>5.3.1</version>
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>42.7.7</version>
-        </dependency>
-
+        <!-- JPA -->
         <dependency>
             <groupId>jakarta.persistence</groupId>
             <artifactId>jakarta.persistence-api</artifactId>
             <version>3.1.0</version>
         </dependency>
-
         <dependency>
-            <groupId>org.hibernate.orm</groupId>
+            <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>6.4.0.Final</version>
         </dependency>
 
-        <!-- MVC -->
+        <!-- DB -->
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-            <version>6.2.5</version>
-        </dependency>
-        <dependency>
-            <groupId>org.thymeleaf</groupId>
-            <artifactId>thymeleaf</artifactId>
-            <version>3.1.3.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>org.thymeleaf</groupId>
-            <artifactId>thymeleaf-spring6</artifactId>
-            <version>3.1.3.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>jakarta.servlet</groupId>
-            <artifactId>jakarta.servlet-api</artifactId>
-            <version>6.0.0</version>
-            <scope>provided</scope>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.7.5</version>
+            <scope>runtime</scope>
         </dependency>
 
-        <!-- VALIDATION -->
+        <!-- MVC -->
         <dependency>
-            <groupId>jakarta.validation</groupId>
-            <artifactId>jakarta.validation-api</artifactId>
-            <version>3.0.2</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>3.3.10</version>
         </dependency>
         <dependency>
-            <groupId>org.hibernate.validator</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>8.0.2.Final</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+            <version>3.3.10</version>
+        </dependency>
+
+        <!-- TOOLS -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+            <version>3.3.10</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.5.0</version>
         </dependency>
     </dependencies>
 
@@ -124,11 +121,6 @@
                     <source>17</source>
                     <target>17</target>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>3.4.0</version>
             </plugin>
         </plugins>
     </build>
