@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>New reservation</title>
+</head>
+
+<body>
+<h2>Reservation creation</h2>
+<br>
+<form action="#" th:action="@{/reservation/new}" th:object="${reservationInput}" method="post">
+    <div>
+        <label>Enter reservation id: </label>
+        <input type="number" th:field="*{id}" placeholder="Id"/>
+        <p th:if="${#fields.hasErrors('id')}" th:errors="*{id}" style="color: red;"></p>
+
+        <br>
+        <label>Enter workspace id: </label>
+        <input type="number" th:field="*{spaceId}" placeholder="Id"/>
+        <p th:if="${#fields.hasErrors('spaceId')}" th:errors="*{spaceId}" style="color: red;"></p>
+
+        <br>
+        <label>Enter client name: </label>
+        <input type="text" th:field="*{clientName}" placeholder="Name"/>
+        <p th:if="${#fields.hasErrors('clientName')}" th:errors="*{clientName}" style="color: red;"></p>
+
+        <br>
+        <label>Enter reservation date in a dd-mm-yyyy format: </label>
+        <input type="text" th:field="*{date}" placeholder="Date"/>
+        <p th:if="${#fields.hasErrors('date')}" th:errors="*{date}" style="color: red;"></p>
+
+        <br>
+        <label>Enter start time in a hh:mm format: </label>
+        <input type="text" th:field="*{timeStart}" placeholder="Time"/>
+        <p th:if="${#fields.hasErrors('timeStart')}" th:errors="*{timeStart}" style="color: red;"></p>
+
+        <br>
+        <label>Enter end time in a hh:mm format: </label>
+        <input type="text" th:field="*{timeEnd}" placeholder="Time"/>
+        <p th:if="${#fields.hasErrors('timeEnd')}" th:errors="*{timeEnd}" style="color: red;"></p>
+
+        <p th:if="${error}" th:text="${error}" style="color: red;"></p>
+    </div>
+    <br> <button type="submit">Create new reservation</button>
+</form>
+<br> <a th:href="@{/user}">Resume</a>
+</body>
+
+</html>

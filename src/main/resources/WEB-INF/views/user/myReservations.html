@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>My reservations</title>
+</head>
+
+<body>
+<h2>List of reservations</h2>
+<br>
+<tr th:each="reservation : ${reservationList}">
+    <br> <td th:text="${reservation}"></td> <br>
+</tr>
+<br>
+<a th:href="@{/user}">Resume</a>
+</body>
+
+</html>

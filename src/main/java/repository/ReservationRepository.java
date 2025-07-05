@@ -4,50 +4,25 @@ import entity.Reservation;
 import entity.WorkSpace;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class ReservationRepository {
 
-    private final WorkSpaceRepository workSpaceRepository;
-
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Autowired
-    public ReservationRepository(WorkSpaceRepository workSpaceRepository) {
-        this.workSpaceRepository = workSpaceRepository;
-    }
-
     @Transactional
     public int addNewReservation(Reservation reservation) {
-        Optional<WorkSpace> workSpace = workSpaceRepository.getWorkSpaceById(reservation.getSpaceId());
-
-        if (workSpace.isEmpty()) {
-            return 0;
-        }
-
-        reservation = new Reservation(reservation.getId(), workSpace.get(), reservation.getClientName(),
-                reservation.getDate(), reservation.getTimeStart(), reservation.getTimeEnd());
-
         entityManager.persist(reservation);
-
         return 1;
     }
 
-    public Optional<Reservation> getReservationById(int id) {
-        Reservation reservation = entityManager.find(Reservation.class, id);
-
-        if (reservation != null) {
-            return Optional.of(reservation);
-        } else {
-            return Optional.empty();
-        }
+    public Reservation getReservationById(int id) {
+        return entityManager.find(Reservation.class, id);
     }
 
     public List<Reservation> getAllReservations() {
@@ -56,10 +31,10 @@ public class ReservationRepository {
 
     @Transactional
     public int deleteReservation(int id) {
-        Optional<Reservation> reservation = getReservationById(id);
+        Reservation reservation = getReservationById(id);
 
-        if (reservation.isPresent()) {
-            entityManager.remove(reservation.get());
+        if (reservation != null) {
+            entityManager.remove(reservation);
             entityManager.flush();
 
             return 1;
@@ -69,15 +44,10 @@ public class ReservationRepository {
     }
 
     @Transactional
-    public int deleteReservationByWorkSpaceId(int spaceId) {
-        Optional<WorkSpace> workSpace = workSpaceRepository.getWorkSpaceById(spaceId);
+    public int deleteReservationByWorkSpaceId(WorkSpace space) {
         List<Reservation> reservationList;
 
-        if (workSpace.isEmpty()) {
-            return 0;
-        }
-
-        reservationList = getAllReservationsByWorkSpaceId(workSpace.get());
+        reservationList = getAllReservationsByWorkSpaceId(space);
 
         for (Reservation reservation : reservationList) {
             entityManager.remove(reservation);
