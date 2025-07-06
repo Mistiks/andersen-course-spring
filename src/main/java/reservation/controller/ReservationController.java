@@ -37,7 +37,7 @@ public class ReservationController {
     private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
     @GetMapping("/all")
-    public List<ReservationModel> getAllReservations(Model model) {
+    public List<ReservationModel> getAllReservations() {
         return reservationService.getAllReservations();
     }
 
@@ -78,7 +78,7 @@ public class ReservationController {
         int status = workSpaceReservationService.deleteReservation(input.getId());
 
         if (status == 0) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         return new ResponseEntity<>(HttpStatus.OK);

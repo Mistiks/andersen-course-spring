@@ -23,7 +23,8 @@ public class ReservationService {
     }
 
     public List<ReservationModel> getAllReservations() {
-        return reservationRepository.getAllReservations().stream()
+        return reservationRepository.findAll()
+                .stream()
                 .map(i -> new ReservationModel(i.getId(), i.getSpaceId(), i.getClientName(),
                         i.getDate().format(dateFormatter), i.getTimeStart().format(timeFormatter),
                         i.getTimeEnd().format(timeFormatter)))
@@ -31,6 +32,6 @@ public class ReservationService {
     }
 
     public Optional<Reservation> getReservationById(int id) {
-        return Optional.ofNullable(reservationRepository.getReservationById(id));
+        return reservationRepository.findById(id);
     }
 }

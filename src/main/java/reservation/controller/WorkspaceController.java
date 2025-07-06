@@ -32,27 +32,26 @@ public class WorkspaceController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        workSpaceService.addNewWorkspace(new WorkSpace(input.getId(), input.getType(), input.getPrice()));
+        if (workSpaceService.addNewWorkspace(input) == input.getId()) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping("/update")
     public ResponseEntity<?> updateSpace(@RequestBody @Valid WorkSpaceModel input) {
         Optional<WorkSpace> workSpace = workSpaceService.getWorkSpaceById(input.getId());
-        WorkSpace space;
 
         if (workSpace.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        space = workSpace.get();
-        space.setType(input.getType());
-        space.setPrice(input.getPrice());
-        space.setAvailability(input.isAvailability());
-        workSpaceService.updateWorkSpace(space);
+        if (workSpaceService.updateWorkSpace(input) == input.getId()) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 
     @DeleteMapping("/delete")
@@ -60,7 +59,7 @@ public class WorkspaceController {
         Optional<WorkSpace> workSpace = workSpaceService.getWorkSpaceById(input.getId());
 
         if (workSpace.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         workSpaceReservationService.deleteWorkSpace(workSpace.get().getId());

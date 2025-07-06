@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import reservation.repository.ReservationRepository;
 import reservation.repository.WorkSpaceRepository;
 
+import java.util.Optional;
+
 @Service
 public class WorkSpaceReservationService {
 
@@ -21,51 +23,51 @@ public class WorkSpaceReservationService {
     }
 
     @Transactional
-    public int addReservation(Reservation reservation) {
+    public void addReservation(Reservation reservation) {
         int status;
-        WorkSpace workSpace = workSpaceRepository.getWorkSpaceById(reservation.getSpaceId());
+        Optional<WorkSpace> workSpace = workSpaceRepository.findById(reservation.getSpaceId());
 
-        if (workSpace != null) {
-            reservation = new Reservation(reservation.getId(), workSpace, reservation.getClientName(),
+        if (workSpace.isPresent()) {
+            reservation = new Reservation(reservation.getId(), workSpace.get(), reservation.getClientName(),
                     reservation.getDate(), reservation.getTimeStart(), reservation.getTimeEnd());
-            status = reservationRepository.addNewReservation(reservation);
+            status = reservationRepository.save(reservation).getId();
 
-            if (status == 1) {
-                workSpace.setAvailability(false);
-                workSpaceRepository.updateWorkSpace(workSpace);
+            if (status == reservation.getId()) {
+                workSpace.get().setAvailability(false);
+                workSpaceRepository.save(workSpace.get());
             }
-
-            return status;
         }
-
-        return 0;
     }
 
-    public int deleteWorkSpace(int spaceId) {
-        WorkSpace workSpace = workSpaceRepository.getWorkSpaceById(spaceId);
+    @Transactional
+    public void deleteWorkSpace(int spaceId) {
+        Optional<WorkSpace> workSpace = workSpaceRepository.findById(spaceId);
 
-        if (workSpace == null) {
-            return 0;
+        if (workSpace.isEmpty()) {
+            return;
         }
 
-        reservationRepository.deleteReservationByWorkSpaceId(workSpace);
-        return workSpaceRepository.deleteWorkspace(spaceId);
+        reservationRepository.deleteAllByWorkSpace(workSpace.get());
+        workSpaceRepository.deleteById(spaceId);
     }
 
+    @Transactional
     public int deleteReservation(int reservationId) {
-        Reservation reservation = reservationRepository.getReservationById(reservationId);
+        Optional<Reservation> reservation = reservationRepository.findById(reservationId);
 
-        if (reservation == null) {
+        if (reservation.isEmpty()) {
             return 0;
         }
 
-        WorkSpace workSpace = workSpaceRepository.getWorkSpaceById(reservation.getSpaceId());
+        Optional<WorkSpace> workSpace = workSpaceRepository.findById(reservation.get().getSpaceId());
 
-        if (workSpace != null) {
-            workSpace.setAvailability(true);
-            workSpaceRepository.updateWorkSpace(workSpace);
+        if (workSpace.isPresent()) {
+            workSpace.get().setAvailability(true);
+            workSpaceRepository.save(workSpace.get());
         }
 
-        return reservationRepository.deleteReservation(reservationId);
+        reservationRepository.deleteById(reservationId);
+
+        return 1;
     }
 }
