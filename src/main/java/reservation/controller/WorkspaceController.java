@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/workspace")
+@RequestMapping("/workspaces")
 public class WorkspaceController {
 
     @Autowired
@@ -24,7 +24,7 @@ public class WorkspaceController {
     @Autowired
     private WorkSpaceReservationService workSpaceReservationService;
 
-    @PostMapping("/new")
+    @PostMapping
     public ResponseEntity<?> createNewSpace(@RequestBody @Valid WorkSpaceModel input) {
         Optional<WorkSpace> workSpace = workSpaceService.getWorkSpaceById(input.getId());
 
@@ -39,7 +39,7 @@ public class WorkspaceController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @PutMapping("/update")
+    @PutMapping
     public ResponseEntity<?> updateSpace(@RequestBody @Valid WorkSpaceModel input) {
         Optional<WorkSpace> workSpace = workSpaceService.getWorkSpaceById(input.getId());
 
@@ -54,7 +54,7 @@ public class WorkspaceController {
         return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping
     public ResponseEntity<?> deleteSpace(@RequestBody @Valid IdModel input) {
         Optional<WorkSpace> workSpace = workSpaceService.getWorkSpaceById(input.getId());
 

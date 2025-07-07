@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/reservation")
+@RequestMapping("/reservations")
 public class ReservationController {
 
     @Autowired
@@ -41,7 +41,7 @@ public class ReservationController {
         return reservationService.getAllReservations();
     }
 
-    @PostMapping("/new")
+    @PostMapping
     public ResponseEntity<?> createReservation(@RequestBody @Valid ReservationModel input) {
         LocalDate date;
         LocalTime timeStart;
@@ -73,7 +73,7 @@ public class ReservationController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping
     public ResponseEntity<?> deleteReservation(@RequestBody @Valid IdModel input) {
         int status = workSpaceReservationService.deleteReservation(input.getId());
 
