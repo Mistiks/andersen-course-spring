@@ -8,16 +8,11 @@ import reservation.model.ReservationModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import reservation.service.ReservationService;
 import reservation.service.WorkSpaceReservationService;
 import reservation.service.WorkSpaceService;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,20 +28,14 @@ public class ReservationController {
 
     @Autowired
     private WorkSpaceReservationService workSpaceReservationService;
-    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-    private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
-    @GetMapping("/all")
+    @GetMapping
     public List<ReservationModel> getAllReservations() {
         return reservationService.getAllReservations();
     }
 
     @PostMapping
     public ResponseEntity<?> createReservation(@RequestBody @Valid ReservationModel input) {
-        LocalDate date;
-        LocalTime timeStart;
-        LocalTime timeEnd;
-        Reservation newReservation;
         Optional<Reservation> reservation = reservationService.getReservationById(input.getId());
 
         if (reservation.isPresent()) {
@@ -59,18 +48,11 @@ public class ReservationController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        try {
-            date = LocalDate.parse(input.getDate(), dateFormatter);
-            timeStart = LocalTime.parse(input.getTimeStart(), timeFormatter);
-            timeEnd = LocalTime.parse(input.getTimeEnd(), timeFormatter);
-        } catch (DateTimeParseException exception) {
+        if (workSpaceReservationService.addReservation(input, workSpace.get()) == input.getId()) {
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
-        newReservation = new Reservation(input.getId(), workSpace.get(), input.getClientName(), date, timeStart, timeEnd);
-        workSpaceReservationService.addReservation(newReservation);
-
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping

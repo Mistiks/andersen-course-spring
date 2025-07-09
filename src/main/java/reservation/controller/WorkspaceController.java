@@ -33,7 +33,7 @@ public class WorkspaceController {
         }
 
         if (workSpaceService.addNewWorkspace(input) == input.getId()) {
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.CREATED);
         }
 
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -67,7 +67,7 @@ public class WorkspaceController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public List<WorkSpaceModel> getAllSpaces() {
         return workSpaceService.getAllWorkSpacesInfo();
     }
