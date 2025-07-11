@@ -1,6 +1,8 @@
 package reservation.entity;
 
 import jakarta.persistence.*;
+import reservation.model.WorkSpaceModel;
+
 import java.util.Objects;
 
 @Entity
@@ -29,11 +31,11 @@ public class WorkSpace {
         this.availability = isAvailable;
     }
 
-    public WorkSpace(int id, String type, int price) {
-        this.id = id;
-        this.type = type;
-        this.price = price;
-        this.availability = true;
+    public WorkSpace(WorkSpaceModel model) {
+        this.id = model.getId();
+        this.type = model.getType();
+        this.price = model.getPrice();
+        this.availability = model.isAvailability();
     }
 
     public int getId() {

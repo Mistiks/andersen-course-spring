@@ -3,6 +3,7 @@ package reservation.model;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import reservation.entity.WorkSpace;
 
 public class WorkSpaceModel {
 
@@ -28,10 +29,11 @@ public class WorkSpaceModel {
         this.availability = availability;
     }
 
-    public WorkSpaceModel(int id, String type, int price) {
-        this.id = id;
-        this.type = type;
-        this.price = price;
+    public WorkSpaceModel(WorkSpace space) {
+        this.id = space.getId();
+        this.type = space.getType();
+        this.price = space.getPrice();
+        this.availability = space.getAvailability();
     }
 
     public int getId() {
