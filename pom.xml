@@ -93,6 +93,13 @@
             <version>3.3.10</version>
         </dependency>
 
+        <!-- SECURITY -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+            <version>3.3.10</version>
+        </dependency>
+
         <!-- TOOLS -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
