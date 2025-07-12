@@ -1,7 +1,5 @@
 package reservation.controller;
 
-import reservation.entity.Reservation;
-import reservation.entity.WorkSpace;
 import jakarta.validation.Valid;
 import reservation.model.IdModel;
 import reservation.model.ReservationModel;
@@ -9,46 +7,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import reservation.service.ReservationService;
-import reservation.service.WorkSpaceReservationService;
-import reservation.service.WorkSpaceService;
+import reservation.service.ReservationFacadeService;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/reservations")
 public class ReservationController {
 
     @Autowired
-    private WorkSpaceService workSpaceService;
-
-    @Autowired
-    private ReservationService reservationService;
-
-    @Autowired
-    private WorkSpaceReservationService workSpaceReservationService;
+    private ReservationFacadeService reservationFacadeService;
 
     @GetMapping
     public List<ReservationModel> getAllReservations() {
-        return reservationService.getAllReservations();
+        return reservationFacadeService.getAllReservations();
     }
 
     @PostMapping
     public ResponseEntity<?> createReservation(@RequestBody @Valid ReservationModel input) {
-        Optional<Reservation> reservation = reservationService.getReservationById(input.getId());
+        int status = reservationFacadeService.createReservation(input);
 
-        if (reservation.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        Optional<WorkSpace> workSpace = workSpaceService.getWorkSpaceById(input.getSpaceId());
-
-        if (workSpace.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        if (workSpaceReservationService.addReservation(input, workSpace.get()) == input.getId()) {
+        if (status == 1) {
             return new ResponseEntity<>(HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -57,12 +36,12 @@ public class ReservationController {
 
     @DeleteMapping
     public ResponseEntity<?> deleteReservation(@RequestBody @Valid IdModel input) {
-        int status = workSpaceReservationService.deleteReservation(input.getId());
+        int status = reservationFacadeService.deleteReservation(input);
 
         if (status == 0) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(HttpStatus.OK);
         }
-
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

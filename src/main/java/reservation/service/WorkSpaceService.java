@@ -1,6 +1,5 @@
 package reservation.service;
 
-import jakarta.validation.Valid;
 import org.springframework.transaction.annotation.Transactional;
 import reservation.entity.WorkSpace;
 import reservation.model.WorkSpaceModel;
@@ -24,7 +23,7 @@ public class WorkSpaceService {
 
     @Transactional
     public int addNewWorkspace(WorkSpaceModel space) {
-        WorkSpace newSpace = new WorkSpace(space.getId(), space.getType(), space.getPrice(), space.isAvailability());
+        WorkSpace newSpace = new WorkSpace(space);
 
         return workSpaceRepository.save(newSpace).getId();
     }
@@ -37,19 +36,19 @@ public class WorkSpaceService {
         return workSpaceRepository.findAll()
                 .stream()
                 .sorted(Comparator.comparing(WorkSpace::getId))
-                .map(i -> new WorkSpaceModel(i.getId(), i.getType(), i.getPrice(), i.getAvailability()))
+                .map(WorkSpaceModel::new)
                 .toList();
     }
 
     public List<WorkSpaceModel> getAllAvailableWorkSpaces() {
         return workSpaceRepository.findByAvailabilityTrue().stream()
-                .map(i -> new WorkSpaceModel(i.getId(), i.getType(), i.getPrice(), i.getAvailability()))
+                .map(WorkSpaceModel::new)
                 .toList();
     }
 
     @Transactional
     public int updateWorkSpace(WorkSpaceModel space) {
-        WorkSpace newSpace = new WorkSpace(space.getId(), space.getType(), space.getPrice(), space.isAvailability());
+        WorkSpace newSpace = new WorkSpace(space);
 
         return workSpaceRepository.save(newSpace).getId();
     }
