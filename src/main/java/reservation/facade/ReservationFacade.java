@@ -1,4 +1,4 @@
-package reservation.service;
+package reservation.facade;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -6,21 +6,27 @@ import reservation.entity.Reservation;
 import reservation.entity.WorkSpace;
 import reservation.model.IdModel;
 import reservation.model.ReservationModel;
+import reservation.service.ReservationService;
+import reservation.service.WorkSpaceReservationService;
+import reservation.service.WorkSpaceService;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ReservationFacadeService {
+public class ReservationFacade {
+
+    private final WorkSpaceService workSpaceService;
+    private final ReservationService reservationService;
+    private final WorkSpaceReservationService workSpaceReservationService;
 
     @Autowired
-    private WorkSpaceService workSpaceService;
-
-    @Autowired
-    private ReservationService reservationService;
-
-    @Autowired
-    private WorkSpaceReservationService workSpaceReservationService;
+    public ReservationFacade(WorkSpaceService workSpaceService, ReservationService reservationService,
+                             WorkSpaceReservationService workSpaceReservationService) {
+        this.workSpaceService = workSpaceService;
+        this.reservationService = reservationService;
+        this.workSpaceReservationService = workSpaceReservationService;
+    }
 
     public List<ReservationModel> getAllReservations() {
         return reservationService.getAllReservations();

@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import reservation.service.ReservationFacadeService;
+import reservation.facade.ReservationFacade;
 
 import java.util.List;
 
@@ -15,17 +15,21 @@ import java.util.List;
 @RequestMapping("/reservations")
 public class ReservationController {
 
+    private final ReservationFacade reservationFacade;
+
     @Autowired
-    private ReservationFacadeService reservationFacadeService;
+    public ReservationController(ReservationFacade reservationFacade) {
+        this.reservationFacade = reservationFacade;
+    }
 
     @GetMapping
     public List<ReservationModel> getAllReservations() {
-        return reservationFacadeService.getAllReservations();
+        return reservationFacade.getAllReservations();
     }
 
     @PostMapping
     public ResponseEntity<?> createReservation(@RequestBody @Valid ReservationModel input) {
-        int status = reservationFacadeService.createReservation(input);
+        int status = reservationFacade.createReservation(input);
 
         if (status == 1) {
             return new ResponseEntity<>(HttpStatus.CREATED);
@@ -36,7 +40,7 @@ public class ReservationController {
 
     @DeleteMapping
     public ResponseEntity<?> deleteReservation(@RequestBody @Valid IdModel input) {
-        int status = reservationFacadeService.deleteReservation(input);
+        int status = reservationFacade.deleteReservation(input);
 
         if (status == 0) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
