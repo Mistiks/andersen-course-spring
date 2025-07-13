@@ -14,9 +14,6 @@ public class Reservation {
     @Column(name = "id")
     private int id;
 
-    @Transient
-    private int spaceId;
-
     @ManyToOne
     @JoinColumn(name = "space_id")
     private WorkSpace workSpace;
@@ -41,15 +38,6 @@ public class Reservation {
 
     public Reservation() {}
 
-    public Reservation(int id, int spaceId, String clientName, LocalDate date, LocalTime timeStart, LocalTime timeEnd) {
-        this.id = id;
-        this.spaceId = spaceId;
-        this.clientName = clientName;
-        this.date = date;
-        this.timeStart = timeStart;
-        this.timeEnd = timeEnd;
-    }
-
     public Reservation(int id, WorkSpace workSpace, String clientName, LocalDate date, LocalTime timeStart, LocalTime timeEnd) {
         this.id = id;
         this.clientName = clientName;
@@ -57,7 +45,6 @@ public class Reservation {
         this.timeStart = timeStart;
         this.timeEnd = timeEnd;
         this.workSpace = workSpace;
-        this.spaceId = workSpace.getId();
     }
 
     public int getId() {
@@ -65,11 +52,11 @@ public class Reservation {
     }
 
     public int getSpaceId() {
-        return spaceId == 0 ? workSpace.getId() : spaceId;
+        return workSpace.getId();
     }
 
     public void setSpaceId(int spaceId) {
-        this.spaceId = spaceId;
+        workSpace.setId(spaceId);
     }
 
     public String getClientName() {
@@ -115,7 +102,7 @@ public class Reservation {
     @Override
     public String toString() {
         return String.format("Reservation №%d of workspace with id %d by %s on %s. Start: %s. End: %s",
-                id, spaceId == 0 ? workSpace.getId() : spaceId, clientName,
+                id, workSpace.getId(), clientName,
                 dateFormatter.format(date), timeFormatter.format(timeStart), timeFormatter.format(timeEnd));
     }
 }
