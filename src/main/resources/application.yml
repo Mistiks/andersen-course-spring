@@ -5,7 +5,7 @@ spring:
   application:
     name: Workspace reservation
   datasource:
-    url: jdbc:postgresql://localhost:5432/edu
+    url: ${SPRING_DATASOURCE_URL}
     username: postgres
     password: password
     driver-class-name: org.postgresql.Driver
