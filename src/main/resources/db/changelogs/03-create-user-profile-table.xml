@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <changeSet id="03-create-user-profile-table" author="v.rataiko">
+        <createTable tableName="user_profile">
+            <column name="id" type="INTEGER" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="username" type="CLOB">
+                <constraints unique="true"/>
+            </column>
+            <column name="password" type="CLOB"/>
+            <column name="role" type="CLOB"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="03-add-default-user-profile" author="v.rataiko">
+        <insert tableName="user_profile">
+            <column name="username" value="admin"/>
+            <column name="password" value="$2a$12$z1GIuo5sGIhkdmKGwaQd7eDjBkVc4wWsdRw6GNTHY1wiVbjoq74gK"/>
+            <column name="role" value="ADMIN"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
