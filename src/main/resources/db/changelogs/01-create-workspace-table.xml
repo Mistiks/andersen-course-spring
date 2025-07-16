@@ -10,7 +10,7 @@
             <column name="id" type="INTEGER">
                 <constraints primaryKey="true" nullable="false" />
             </column>
-            <column name="type" type="CLOB">
+            <column name="type" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
             <column name="price" type="INTEGER">

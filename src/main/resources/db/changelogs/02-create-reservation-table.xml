@@ -16,7 +16,7 @@
                              referencedTableName="workspace"
                              referencedColumnNames="id"/>
             </column>
-            <column name="client_name" type="CLOB">
+            <column name="client_name" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
             <column name="reservation_date" type="DATE">
