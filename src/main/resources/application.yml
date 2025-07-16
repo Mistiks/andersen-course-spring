@@ -5,16 +5,18 @@ spring:
   application:
     name: Workspace reservation
   datasource:
-    url: jdbc:postgresql://localhost:5432/edu
+    url: ${SPRING_DATASOURCE_URL}
     username: postgres
     password: password
     driver-class-name: org.postgresql.Driver
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
       show-sql: true
       format-sql: true
+  liquibase:
+    change-log: db/changelog-master.xml
 
 management:
   endpoints:
